@@ -1,0 +1,76 @@
+/*
+
+10 Days of Statistics
+
+1-
+
+Objective
+In this challenge, we practice calculating the mean, median, and mode. Check out the Tutorial tab for learning materials and an instructional video!
+
+
+Sample Input
+
+10
+64630 11735 14216 99233 14470 4978 73429 38120 51135 67060
+
+
+Sample Output
+
+43900.6
+44627.5
+4978
+
+*/
+
+function processData(input) {
+  const [largo, numeros] = input.split("\n");    
+  const input2 = numeros.split(" ").map(x => parseInt(x));  
+  //con esto limpio el input separando los numeros en un array
+  
+  //mean 
+  
+  let arr = input2.reduce((acc, item) => acc + item);
+  mean = (arr / input2.length);
+  
+  //median
+  let median;
+  const sortedArr = input2.sort((a,b) => a - b);
+  //la linea anterior ordena el array 
+  console.log(sortedArr);
+  if (sortedArr.length % 2 == 0){
+      median = (sortedArr[(input2.length / 2) - 1 ] + sortedArr[input2.length / 2]) / 2;
+  } else { 
+      median = sortedArr[(input2.length - 1) / 2];
+  }
+  
+  //mode (resuelvo usando una tabla de hash, luego al objeto derusltante lo divido y busco el elemento mas repetido y retorno su posicion, 
+  //creo que se podría simplificar peero estoy con mucho trabajo para dedicarle mas tiempo)
+  let tabla = {};
+  let mode;
+  input2.forEach((elem) => {
+      if (tabla[elem]) {
+        tabla[elem]++;
+      } else {
+        tabla[elem] = 1;
+      }
+  })
+    
+  let values = Object.values(tabla);
+  let keys = Object.keys(tabla);
+  let temp = values.indexOf(values.reduce((a, v) =>  v < a ? a : v));
+  mode = keys[temp];
+  mode = parseInt(mode);
+  mean = Math.round(mean * 10) / 10
+  median = Math.round(median * 10) / 10
+  
+  
+  console.log(mean + "\n" + median +"\n" + mode);
+  
+  return {Mean: mean, Median: median, Mode: mode};
+} 
+
+processData("10\n64630 11735 14216 99233 14470 4978 73429 38120 51135 67060");
+
+//el input fue medio tramposo, porque no me quedó otra que buscar como limpiar el salto de linea.
+
+//El codigo funciona bien, no es elegante pero anda.
