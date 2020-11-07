@@ -1,0 +1,50 @@
+function processData(input) {
+    
+    //funcion de busqueda de los cuartiles de un array.
+    
+    let [length, datos] = input.split("\n");
+    
+    let datos2 = datos.split(/ /).map((item) => parseInt(item));
+    
+    //console.log(datos2); //testeo
+    
+    
+    //ordeno los datos
+    datos3 = datos2.sort((a,b) => a - b);
+    //console.log(datos3);  //testeo
+    
+    //busco los cuartiles.
+    //para poder pasar los diferentes test de HackerRank tuve que modificar Q1, como? 
+    //sacando el metodo Slice y usando filter para que devuelva otro array pero testeando que cada elemento
+    //no sea superior a la media. Si buscaba por posicion (con Slice) si la media era decimal no tenia index
+    //con el que comparar.
+    
+    let qart1 = median(datos3.filter((item) =>  item < median(datos3) ));
+    let qart2 = median(datos3);
+    let qart3 = median(datos3.slice(datos3.indexOf((median(datos3))+1), 101));
+    //uso la funcion de media anidada dentro de un indexOf para que corte en la media y poder buscar en
+    //el subset de Q1 y Q3.
+    
+    //creo una funcion para clcular la media de el array, la puedo usar despues para calcular Q1 y Q3.
+    
+    function median(array){
+        let median;
+        if(array.length % 2 == 0){
+            median = (array[(array.length / 2) - 1 ] + array[array.length / 2]) / 2;
+        } else {
+            median = array[(array.length - 1) / 2];
+        }
+        return median;
+    }
+    //console.log(datos3.slice(0, datos3.indexOf(median(datos3))));
+    console.log(qart1)
+    console.log(qart2);
+    console.log(qart3)
+
+} 
+
+processData("9\n3 7 8 5 12 14 21 13 18");
+
+processData("12\n4 17 7 14 18 12 3 16 10 4 4 12");
+
+processData("10\n3 7 8 5 12 14 21 15 18 14");
