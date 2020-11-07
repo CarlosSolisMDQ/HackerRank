@@ -1,0 +1,55 @@
+/*
+Segundo desafío de los 10 dias de estadistica (10 Days of Statistics) de HackerRank. 
+
+Day 0: Weighted Mean
+
+La cosa es obtener la Media ponderada de un solo input. Primero hay que limpiar el input de saltos de linea y despues 
+transformarlos en array para poder operarlos. 
+
+El input esperado es: 
+
+5
+10 40 30 50 20
+1 2 3 4 5
+
+Queda en uno hacer que la funcion lo ingrese como "5\n10 40 30 50 20\n1 2 3 4 5" 
+
+(tengo que ser honesto que limpiar el input fu lo mas dificil de los primeros dos desafíos)
+*/
+
+
+
+
+
+
+
+function processData(input) {
+    const [largo, numeros1, numeros2] = input.split("\n");    
+    const input2 = numeros1.split(" ").map(x => parseInt(x));  
+    const input3 = numeros2.split(" ").map(x => parseInt(x));
+  //con esto limpio el input separando los numeros en un array
+  
+  /* este bloque lo usé para comprobar que la limpieza del input fue exitosa.
+  console.log(largo);
+  console.log(input2);
+  console.log(input3);
+  */
+  
+  let acumulador = 0;
+  for (let i = 0; i < largo; i++){
+     acumulador += (input2[i] * input3[i]);
+  }
+  //console.log(acumulador); //test
+  
+  const divisor = input3.reduce((acumulador, item) => {return acumulador + item});
+  
+  //console.log(divisor); //test
+   
+  const result = (acumulador / divisor).toFixed(1);
+  
+  console.log(result);
+  
+  
+} 
+
+processData("5\n10 40 30 50 20\n1 2 3 4 5")
