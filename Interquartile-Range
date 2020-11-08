@@ -1,0 +1,79 @@
+/*
+
+esta sin terminar
+WIP
+
+*/
+
+
+
+
+function processData(input) {
+    let [n, array1, array2] = input.split("\n");
+    array1 = array1.split(" ").map((item)=> parseInt(item));
+    array2 = array2.split(" ").map((item)=> parseInt(item));
+    //limpio el input
+    
+    
+    //console.log(array1);
+    //console.log(array2);
+    //console.log(n);
+    
+    //construyo el set de datos con los elementos y su repeticion
+    let data = [];
+    for (let i = 0; i <= n; i++){
+        for (let j = 0; j <= array2[i]; j++){
+            data.push(array1[i])
+        }
+    }
+    console.log(data);
+
+    //ordeno el set de datos
+    data = data.sort((a,b) => a-b);
+    
+    console.log(data);
+    
+    //busco el cuartiles Q1,Q2,Q3
+    let qart1 = median(data.filter((item) =>  item < median(data) ));
+    let qart2 = median(data);
+    let qart3 = median(data.filter((item) =>  item > median(data) ));
+    
+    //funcion de busqueda de media
+    function median(array){
+        let median;
+        if(array.length % 2 == 0){
+            median = parseFloat((array[(array.length / 2) - 1 ] + array[array.length / 2])) / 2;
+        } else {
+         median = array[(array.length - 1) / 2];
+        }
+        return median;
+    }
+    
+    /*
+    descubri el problema de los ultimos set de datos que da hackerrank, tienen numeros repetidos, como uso filter para 
+    testear hasta donde cortar el array llego a la primer conincidencia y pierdo un numero de datos. 
+    hoy no tengo tiempo de corregirlo, seguire mañana
+    
+    */
+    
+    console.log(qart1);
+    console.log(qart2);
+    console.log(qart3);
+    
+    //calculo el rango intercuartil, restando Q3 y Q1
+    res = qart3 - qart1;
+    //le configuro un decimal a la respuesta
+    res = res.toFixed(1);
+
+    
+
+    console.log(res);
+}
+
+//processData("6\n6 12 8 10 20 16\n5 4 3 2 1 5");
+
+processData("6\n6 12 8 10 20 16\n5 6 7 8 9 10");
+
+processData("10\n10 40 30 50 20 10 40 30 50 20\n1 2 3 4 5 6 7 8 9 10");
+
+processData("20\n10 40 30 50 20 10 40 30 50 20 1 2 3 4 5 6 7 8 9 10\n1 2 3 4 5 6 7 8 9 10 10 40 30 50 20 10 40 30 50 20");
