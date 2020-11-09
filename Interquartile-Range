@@ -1,11 +1,8 @@
 /*
 
-esta sin terminar
-WIP
+terminado peero no pasa el test 0 increiblemente.
 
 */
-
-
 
 
 function processData(input) {
@@ -15,65 +12,109 @@ function processData(input) {
     //limpio el input
     
     
-    //console.log(array1);
-    //console.log(array2);
-    //console.log(n);
-    
     //construyo el set de datos con los elementos y su repeticion
+    
     let data = [];
     for (let i = 0; i <= n; i++){
         for (let j = 0; j <= array2[i]; j++){
             data.push(array1[i])
         }
     }
-    console.log(data);
+    
 
     //ordeno el set de datos
+    
     data = data.sort((a,b) => a-b);
     
-    console.log(data);
     
-    //busco el cuartiles Q1,Q2,Q3
-    let qart1 = median(data.filter((item) =>  item < median(data) ));
+    /*
+    Aqui viene un quebradero de cabeza
+    
+    por alguna razon el metodo Slice() describía un comportamiento extraño, 
+    si usaba la variable "PosicionMedia + 1" algunos de los array retornaban en Q3 un array vacio y hacian
+    que "res" sea NaN. ¿Por qué? misterio. Compilandolo en Node en mi linux no ocurría, pero si en el navegador
+    La solucion fue asignar la posicion a la variable "posicionMedia" y subsiguientemente 
+    aumentarla (posicionMedia++).
+    De algun modo eso marcó la diferencia y al compilar el codigo ya no dio error.
+    
+    
+    */
+    
+    let posicionMedia = medianPos(data);
+    posicionMedia++;
+    
+    //declaro los cuartiles, Q1 y Q3 en cero y Q2 le asigno la media
+    
     let qart2 = median(data);
-    let qart3 = median(data.filter((item) =>  item > median(data) ));
+    let qart1 = 0;
+    let qart3 = 0;
+    
+
+    //esto es medio al pedo pero igual lo pongo, este if filtra si el array tiene elementos repetidos o no.
+    //y cambia el metodo de busqueda de la media del sub array.
+    
+    if((new Set(data) !== data.length)){
+        qart1 = median(data.slice(0, posicionMedia ));  
+        qart3 = median(data.slice(posicionMedia)); 
+    } else {
+        qart1 = median(data.filter((item) =>  item < median(data) ));
+        qart3 = median(data.filter((item) =>  item > median(data) ));
+    }
     
     //funcion de busqueda de media
+    
     function median(array){
         let median;
+        
         if(array.length % 2 == 0){
             median = parseFloat((array[(array.length / 2) - 1 ] + array[array.length / 2])) / 2;
+             
         } else {
-         median = array[(array.length - 1) / 2];
+            median = array[(array.length - 1) / 2];
+            
         }
         return median;
     }
     
     /*
-    descubri el problema de los ultimos set de datos que da hackerrank, tienen numeros repetidos, como uso filter para 
-    testear hasta donde cortar el array llego a la primer conincidencia y pierdo un numero de datos. 
-    hoy no tengo tiempo de corregirlo, seguire mañana
+    funcion de busqueda de la POSICION de la media
+    ¿Para que M.. hiciste esto? Bueno, cuando el array tiene elementos repetidos y 
+    la media queda entre un monton de elementos iguales, el metodo Filter() no te sirve para buscar el sub array
+    y no queda otra que buscar con slice (que me dio un comportamiento extraño en el navegador)
+     */
     
-    */
-    
-    console.log(qart1);
-    console.log(qart2);
-    console.log(qart3);
+    function medianPos(array){
+        let median;
+        
+        if(array.length % 2 == 0){
+            medianPos = ((((array.length / 2) - 1)  + (array.length / 2)) / 2).toFixed(); 
+        } else {
+            medianPos = (array.length - 1) / 2;
+            
+        }
+        return medianPos;
+    }
     
     //calculo el rango intercuartil, restando Q3 y Q1
+    
     res = qart3 - qart1;
+    
     //le configuro un decimal a la respuesta
+    
     res = res.toFixed(1);
 
     
-
     console.log(res);
 }
 
-//processData("6\n6 12 8 10 20 16\n5 4 3 2 1 5");
+processData("6\n6 12 8 10 20 16\n5 4 3 2 1 5");
+
+processData("20\n10 40 30 50 20 10 40 30 50 20 1 2 3 4 5 6 7 8 9 10\n1 2 3 4 5 6 7 8 9 10 10 40 30 50 20 10 40 30 50 20")
 
 processData("6\n6 12 8 10 20 16\n5 6 7 8 9 10");
 
 processData("10\n10 40 30 50 20 10 40 30 50 20\n1 2 3 4 5 6 7 8 9 10");
+
+processData("30\n10 40 30 50 20 10 40 30 50 20 1 2 3 4 5 6 7 8 9 10 20 10 40 30 50 20 10 40 30 50\n1 2 3 4 5 6 7 8 9 10 1 2 3 4 5 6 7 8 9 10 10 40 30 50 20 10 40 30 50 20");
 
 processData("20\n10 40 30 50 20 10 40 30 50 20 1 2 3 4 5 6 7 8 9 10\n1 2 3 4 5 6 7 8 9 10 10 40 30 50 20 10 40 30 50 20");
